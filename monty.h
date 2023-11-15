@@ -1,6 +1,14 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _POSIX_C_SOURCE 200809l
+#include <stdio.h>
+#include <unistd.h>
+#include <strings.h>
+#include <stdlib.h>
+
+/* aliases */
+typedef unsigned int ui;
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -30,5 +38,8 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+/* you are going to add the push and pal function prototype over here */
+void push(stack_t **stack, ui line_number);
+void pall(stack_t **stack, ui line_number);
 
 #endif
