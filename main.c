@@ -1,7 +1,5 @@
-#define _POSIX_C_SOURCE 200809l
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "monty.h"
+#include <string.h>
 /**
  * main - main entry point of the interpreter.
  * @ac: argument count.
@@ -10,17 +8,17 @@
  */
 int main(int ac, char **av)
 {
-	/**
-	 * first open and read the file
-	 * use FILE *fp = fopen()
-	 * tokenize -> the command while collecting only the first tokenize
-	 * use the function pointer to select the correct code
-	 */
 	FILE *fp;
-	size_t reads = 0;
-	size_t toread = 0;
-	size_t counter = 1; /* line number */
+	size_t reads = 0, toread = 0, counter = 1; /* line number */
+	int iter = 0;
 	char *buffer = NULL; /* you should definetly free this guy */
+	char *delim = " ", *token = NULL, *int_token = NULL;
+	stack_t *head = NULL;
+	instruction_t opcodes[] = {
+		{"push", push},
+		{"pall", pall},
+		{NULL, NULL}
+	};
 
 	if (ac != 2)
 	{
@@ -34,15 +32,15 @@ int main(int ac, char **av)
 		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
-	/* get the line */
 	while ((reads = getline(&buffer, &toread, fp) != -1))
 	{
-		if (reads == 0)
+		token = strtok(buffer, delim);
+		int_token = strtok(NULL, delim);
+		if (!strcmp(token, opcodes[iter].opcode))
 		{
-			dprintf(STDERR_FILENO, "EOF\n");
-			exit(EXIT_FAILURE);
+			opcodes[iter].f(&head, (ui)atoi(int_token));
+			break;
 		}
-		printf("[%ld] -> %s", counter, buffer);
 		counter++;
 	}
 	free(buffer);
