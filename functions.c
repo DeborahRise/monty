@@ -1,73 +1,146 @@
 #include "monty.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <threads.h>
-#include <unistd.h>
+
 /**
- * create_stack_node - make a new stack
- * @data: value to be stored in the linked list
- * Return: pointer to the newly create_stack node
+ * _isdigit - Entry point
+ *
+ * Return: if is digit  or not, return 1 else 0
  */
-stack_t *create_stack_node(ui data)
+int _isdigit(void)
 {
-	stack_t *new = malloc(sizeof(stack_t));
+	int i = 0;
 
-	if (!new)
-		return (NULL);
-
-	new->n = data;
-	new->next = NULL;
-	new->prev = NULL;
-
-	return (new);
+	if (glo_var.int_token[0] == '-' || glo_var.int_token[0] == '+')
+		i++;
+	while (glo_var.int_token)
+	{
+		if ((glo_var.int_token[i] >= '0' && (glo_var.int_token[i + 1] >= '0'
+						|| glo_var.int_token[i + 1] == '\0')) &&
+				(glo_var.int_token[i] <= '9' && (glo_var.int_token[i + 1] <= '9'
+												 || glo_var.int_token[i + 1] == '\0')))
+			return (1);
+		else
+			return (0);
+		i++;
+	}
+	return (0);
 }
+
 /**
- * push - pushes elements on the stack
- * @stack: pointer to the top of the stack
- * @line_number: data to be inserted in the stack
+ * push - Add node to the stack
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
  * Return: void
  */
-void push(stack_t **stack, ui line_number)
+void push(stack_t **stack, unsigned int line_number)
 {
-	/* doubly linked list */
-	stack_t *stack_elem = create_stack_node(line_number);
-	stack_t *elements = *stack;
 
-	if (!stack_elem)
+	int n = 0;
+
+	if (glo_var.int_token == NULL)
 	{
-		dprintf(STDERR_FILENO, "Malloc failed\n");
-		return;
+		free_stack(*stack);
+		push_int_err(line_number);
 	}
-
-	if (!stack || !*stack)
+	if (!_isdigit() || stack == NULL)
 	{
-		(*stack) = stack_elem;
+		free_stack(*stack);
+		push_int_err(line_number);
+	}
+	n = atoi(glo_var.int_token);
+	if (*stack  == NULL)
+	{
+		create_stacknode_front(stack, n);
 	}
 	else
 	{
-		while (elements->next)
-			elements = elements->next;
-		elements->next = stack_elem;
-		stack_elem->prev = elements;
+		create_stacknode_end(stack, n);
 	}
 }
+
 /**
- * pall - print all the elements in the stack
- * @stack: pointer to the top of the stack
- * @line_number: data to be inserted in the stack
+ * pall - Print the stack
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
  * Return: void
  */
-void pall(stack_t **stack, ui line_number)
+void pall(stack_t **stack, unsigned int line_number)
 {
-	(void)line_number;
-	stack_t *current = *stack;
 
-	if (!*stack || !stack)
-		dprintf(STDERR_FILENO, "stack underflow\n");
+	stack_t *temp = NULL;
 
-	while (current)
+
+	if (*stack == NULL)
 	{
-		dprintf(STDOUT_FILENO, "%u", current->n);
-		current = current->next;
+		return;
 	}
+	if (*stack == NULL && line_number != 1)
+	{
+		free_stack(*stack);
+		free_glo_vars();
+		exit(EXIT_SUCCESS);
+	}
+	temp = *stack;
+	while (temp->next != NULL)
+		temp = temp->next;
+	while (temp->prev != NULL)
+	{
+		printf("%d", temp->n);
+		temp = temp->prev;
+		printf("\n");
+	}
+	printf("%d\n", temp->n);
+}
+
+
+/**
+ * pint - Print the value at the top of the stack.
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
+ *
+ * Return: No return
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+
+	stack_t *temp = NULL;
+
+	if (stack == NULL || *stack == NULL)
+	{
+		pint_err(line_number);
+		return;
+	}
+	temp = *stack;
+	while (temp->next != NULL)
+		temp = temp->next;
+
+	printf("%d", temp->n);
+	printf("\n");
+}
+
+/**
+ * swap - swaps the top two elements of the stack.
+ * @stack: head of linkedlist
+ * @line_number: line number of the instruction
+ *
+ * Return: No return
+ */
+void swap(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp;
+	int i, j;
+
+	if (*stack == NULL || stack == NULL)
+		op_err(line_number, "swap");
+
+	temp = (*stack)->next;
+	if ((*stack)->next == NULL)
+		op_err(line_number, "swap");
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+	}
+	i = temp->n;
+	j = temp->prev->n;
+	temp->n = j;
+	temp->prev->n = i;
 }
