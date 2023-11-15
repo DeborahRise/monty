@@ -1,48 +1,55 @@
+#define _POSIX_C_SOURCE 200809L
 #include "monty.h"
-#include <string.h>
+#include <stdio.h>
+
+GLOBE_VAR glo_var = {NULL, NULL, NULL};
+
 /**
- * main - main entry point of the interpreter.
- * @ac: argument count.
- * @av: argument vector.
- * Return: 0 success, 1 fail
+ * main - main entry point of the interpreter
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: EXIT_SUCCESS or EXIT_FAILURE
  */
-int main(int ac, char **av)
+
+int main(int argc, char **argv)
 {
-	FILE *fp;
-	size_t reads = 0, toread = 0, counter = 1; /* line number */
-	int iter = 0;
-	char *buffer = NULL; /* you should definetly free this guy */
-	char *delim = " ", *token = NULL, *int_token = NULL;
-	stack_t *head = NULL;
-	instruction_t opcodes[] = {
-		{"push", push},
-		{"pall", pall},
-		{NULL, NULL}
-	};
+	char *token = NULL;
+	size_t buf_size = 0;
+	int counter = 0, flag = 0, flag2 = 0;
+	ssize_t reads;
+	stack_t *stack = NULL;
 
-	if (ac != 2)
-	{
-		dprintf(STDERR_FILENO, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
-
-	fp = fopen(av[1], "r");
-	if (!fp)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", av[1]);
-		exit(EXIT_FAILURE);
-	}
-	while ((reads = getline(&buffer, &toread, fp) != -1))
-	{
-		token = strtok(buffer, delim);
-		int_token = strtok(NULL, delim);
-		if (!strcmp(token, opcodes[iter].opcode))
-		{
-			opcodes[iter].f(&head, (ui)atoi(int_token));
-			break;
-		}
+	if (argc != 2)
+		monty_file_err();
+	glo_var.fp = fopen(argv[1], "r");
+	if (!glo_var.fp)
+		fopen_err(argv[1]);
+	reads = getline(&glo_var.buffer, &buf_size, glo_var.fp);
+	if (glo_var.buffer[0] == '#')
+		reads = getline(&glo_var.buffer, &buf_size, glo_var.fp);
+	while (reads >= 0)
+	{flag = 0;
+		flag2 = 0;
 		counter++;
-	}
-	free(buffer);
-	return (0);
+		token = strtok(glo_var.buffer, DELIM);
+		glo_var.int_token = strtok(NULL, DELIM);
+		if (token == NULL)
+		{flag2 = 1;
+			nop(&stack, counter); }
+		if (flag2 == 0)
+		{
+			if (token[0] == '#')
+			{
+				reads = getline(&glo_var.buffer,
+						&buf_size, glo_var.fp);
+				flag = 1; }}
+		if (flag == 0)
+		{get_op_func(token, &stack, counter);
+			reads = getline(&glo_var.buffer, &buf_size,
+					glo_var.fp); }}
+			free_stack(stack);
+			free(glo_var.buffer);
+			glo_var.buffer = NULL;
+			fclose(glo_var.fp);
+			return (EXIT_SUCCESS);
 }
