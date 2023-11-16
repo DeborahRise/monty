@@ -44,9 +44,9 @@ void free_stacknode(stack_t **stack)
  */
 void _STACK(stack_t **stack, unsigned int line_number)
 {
-        (void)stack;
-        (void)line_number;
-        global_var.mode = 0;
+	(void)stack;
+	(void)line_number;
+	global_var.mode = 0;
 }
 
 /**
@@ -58,7 +58,7 @@ void _STACK(stack_t **stack, unsigned int line_number)
 
 void _QUEUE(stack_t **stack, unsigned int line_number)
 {
-        (void)stack;
-        (void)line_number;
-        global_var.mode = 1;
+	(void)stack;
+	(void)line_number;
+	global_var.mode = 1;
 }
