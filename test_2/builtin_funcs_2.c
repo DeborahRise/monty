@@ -42,9 +42,6 @@ void div_v(stack_t **stack, unsigned int line_number)
 		temp = NULL;
 		return;
 	}
-
-
-
 }
 /**
  * mod_v - mod 2nd elem by the top element.
