@@ -36,29 +36,17 @@ void free_stacknode(stack_t **stack)
 	}
 }
 
-/**
- * _STACK - a func that switches mode to stack
- * @stack: stack head
- * @line_number: line_number
- * Return: void
- */
+
 void _STACK(stack_t **stack, unsigned int line_number)
 {
-        (void)stack;
-        (void)line_number;
-        global_var.mode = 0;
+	(void)stack;
+	(void)line_number;
+	glo_var.mode = 0;
 }
-
-/**
- * _QUEUE - a func that switches mode to stack
- * @stack: stack head
- * @line_number: line_number
- * Return: void
- */
 
 void _QUEUE(stack_t **stack, unsigned int line_number)
 {
-        (void)stack;
-        (void)line_number;
-        global_var.mode = 1;
+	(void)stack;
+	(void)line_number;
+	glo_var.mode = 1;
 }

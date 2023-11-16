@@ -1,7 +1,6 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -14,7 +13,6 @@
 #define DELIM " \n\t\a\b"
 #define STACK 0
 #define QUEUE 1
-typedef unsigned int ui;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -23,7 +21,7 @@ typedef unsigned int ui;
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct stack_s
 {
@@ -38,7 +36,7 @@ typedef struct stack_s
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct instruction_s
 {
@@ -55,20 +53,18 @@ typedef struct instruction_s
  * Description: doubly linked list node structure
  * for stack, queues, LIFO, FIFO Holberton project
  */
-typedef struct some_globals
+typedef struct GLOBE
 {
 	char *int_token;
 	FILE *fp;
 	char *buffer;
 	int mode;
-} GLOBE_STRUCT;
 
-extern GLOBE_STRUCT global_var;
-/* Brains of the interpreter */
-void _interpreter(void);
+} GLOBE_VAR;
+
+extern GLOBE_VAR glo_var;
 
 /*error functions*/
-void free_all_global(void);
 void monty_file_err(void);
 void malloc_err(void);
 void fopen_err(char *fd);
@@ -91,7 +87,7 @@ void free_stacknode(stack_t **stack);
 /*The op_func and other helper functions*/
 int _isdigit();
 void rotr(stack_t **stack, unsigned int line_number);
-int get_op_func(const char *token, stack_t **stack, unsigned int line_number);
+int get_op_func(char *token, stack_t **stack, unsigned int line_number);
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
@@ -106,8 +102,7 @@ void div_v(stack_t **stack, unsigned int line_number);
 void mod_v(stack_t **stack, unsigned int line_number);
 void pstr_v(stack_t **stack, unsigned int line_number);
 void rotl(stack_t **stack, unsigned int line_number);
-void _QUEUE(stack_t **stack, unsigned int line_number);
 void _STACK(stack_t **stack, unsigned int line_number);
-
+void _QUEUE(stack_t **stack, unsigned int line_number);
 
 #endif
