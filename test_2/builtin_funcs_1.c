@@ -7,38 +7,37 @@
  */
 void add(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp = NULL;
-	stack_t *temp2 = NULL;
+	stack_t *current = NULL;
+	stack_t *current2 = NULL;
 	int i = 0, j = 0, flag = 0;
 
 	if (*stack == NULL || stack == NULL)
 	{
 		op_err(line_number, "add");
 	}
-	temp = *stack;
-	while (temp->next != NULL)
+	current = *stack;
+	while (current->next)
 	{
-		temp = temp->next;
+		current = current->next;
 		i++;
 		flag = 1;
 	}
-	temp2 = *stack;
+	current2 = *stack;
 	while (j < (i - 1))
 	{
-		temp2 = temp2->next;
+		current2 = current2->next;
 		j++;
 	}
 	if (i == 0 && flag == 0)
 		free_stack(*stack), op_err(line_number, "add");
 	else
 	{
-		temp2->n = temp2->n + temp->n;
-		temp2->next = NULL;
-		free(temp);
-		temp = NULL;
+		current2->n = current2->n + current->n;
+		current2->next = NULL;
+		free(current);
+		current = NULL;
 		return;
 	}
-
 }
 /**
  * sub - subtracts the top e elem from the 2nd top element.

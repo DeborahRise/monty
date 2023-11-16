@@ -27,6 +27,20 @@ void free_stack(stack_t *stack)
  */
 void free_glo_vars(void)
 {
-	fclose(glo_var.fp);
-	free(glo_var.buffer);
+	fclose(global_var.fp);
+	free(global_var.buffer);
+}
+
+/**
+ * free_all_global - wipes out all the memory and closes all opened files
+ * Return: void
+ */
+void free_all_global(void)
+{
+	if (global_var.buffer)
+	{
+		free(global_var.buffer);
+		global_var.buffer = NULL;
+	}
+	fclose(global_var.fp);
 }

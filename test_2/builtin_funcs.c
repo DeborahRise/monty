@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <stdio.h>
 
 /**
  * _isdigit - Entry point
@@ -9,14 +10,14 @@ int _isdigit(void)
 {
 	int i = 0;
 
-	if (glo_var.int_token[0] == '-' || glo_var.int_token[0] == '+')
+	if (global_var.int_token[0] == '-' || global_var.int_token[0] == '+')
 		i++;
-	while (glo_var.int_token)
+	while (global_var.int_token)
 	{
-		if ((glo_var.int_token[i] >= '0' && (glo_var.int_token[i + 1] >= '0'
-						|| glo_var.int_token[i + 1] == '\0')) &&
-				(glo_var.int_token[i] <= '9' && (glo_var.int_token[i + 1] <= '9'
-												 || glo_var.int_token[i + 1] == '\0')))
+		if ((global_var.int_token[i] >= '0' && (global_var.int_token[i + 1] >= '0'
+						|| global_var.int_token[i + 1] == '\0')) &&
+				(global_var.int_token[i] <= '9' && (global_var.int_token[i + 1] <= '9'
+												 || global_var.int_token[i + 1] == '\0')))
 			return (1);
 		else
 			return (0);
@@ -36,7 +37,7 @@ void push(stack_t **stack, unsigned int line_number)
 
 	int n = 0;
 
-	if (glo_var.int_token == NULL)
+	if (global_var.int_token == NULL)
 	{
 		free_stack(*stack);
 		push_int_err(line_number);
@@ -46,7 +47,7 @@ void push(stack_t **stack, unsigned int line_number)
 		free_stack(*stack);
 		push_int_err(line_number);
 	}
-	n = atoi(glo_var.int_token);
+	n = atoi(global_var.int_token);
 	if (*stack  == NULL)
 	{
 		create_stacknode_front(stack, n);
@@ -65,9 +66,7 @@ void push(stack_t **stack, unsigned int line_number)
  */
 void pall(stack_t **stack, unsigned int line_number)
 {
-
-	stack_t *temp = NULL;
-
+	stack_t *current = NULL;
 
 	if (*stack == NULL)
 	{
@@ -79,18 +78,15 @@ void pall(stack_t **stack, unsigned int line_number)
 		free_glo_vars();
 		exit(EXIT_SUCCESS);
 	}
-	temp = *stack;
-	while (temp->next != NULL)
-		temp = temp->next;
-	while (temp->prev != NULL)
+	current = *stack;
+	while (current->next != NULL)
+		current = current->next;
+	while (current)
 	{
-		printf("%d", temp->n);
-		temp = temp->prev;
-		printf("\n");
+		printf("%d\n", current->n);
+		current = current->prev;
 	}
-	printf("%d\n", temp->n);
 }
-
 
 /**
  * pint - Print the value at the top of the stack.
@@ -102,19 +98,18 @@ void pall(stack_t **stack, unsigned int line_number)
 void pint(stack_t **stack, unsigned int line_number)
 {
 
-	stack_t *temp = NULL;
+	stack_t *current = NULL;
 
 	if (stack == NULL || *stack == NULL)
 	{
 		pint_err(line_number);
 		return;
 	}
-	temp = *stack;
-	while (temp->next != NULL)
-		temp = temp->next;
+	current = *stack;
+	while (current->next)
+		current = current->next;
 
-	printf("%d", temp->n);
-	printf("\n");
+	printf("%d\n", current->n);
 }
 
 /**
@@ -133,12 +128,10 @@ void swap(stack_t **stack, unsigned int line_number)
 		op_err(line_number, "swap");
 
 	temp = (*stack)->next;
-	if ((*stack)->next == NULL)
+	if (!(*stack)->next)
 		op_err(line_number, "swap");
-	while (temp->next != NULL)
-	{
+	while (temp->next)
 		temp = temp->next;
-	}
 	i = temp->n;
 	j = temp->prev->n;
 	temp->n = j;
