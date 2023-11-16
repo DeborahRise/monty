@@ -19,7 +19,10 @@ int get_op_func(const char *token, stack_t **stack, unsigned int line_number)
 	{"mod", mod_v}, {"\n", nop},
 	{" ", nop}, {"\t", nop},
 	{"pstr", pstr_v}, {"rotl", rotl},
-	{"rotr", rotr}, {NULL, NULL}
+	{"rotr", rotr},
+	{"queue", _QUEUE },
+	{"stack", _STACK },
+	{NULL, NULL}
 	};
 	int i = 0, flag = 0;
 

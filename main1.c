@@ -2,7 +2,7 @@
 #include "monty.h"
 #include <stdio.h>
 
-GLOBE_STRUCT global_var = {NULL, NULL, NULL};
+GLOBE_STRUCT global_var = {NULL, NULL, NULL, 0};
 /**
  * main - main entry point of the interpreter
  * @argc: argument count
