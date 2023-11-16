@@ -54,7 +54,7 @@ void push(stack_t **stack, unsigned int line_number)
 	}
 	else
 	{
-		create_stacknode_front(stack, n);
+		create_stacknode_end(stack, n);
 	}
 
 	if (global_var.mode == 1 && (*stack)->next != NULL)
