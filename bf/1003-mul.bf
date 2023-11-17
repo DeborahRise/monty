@@ -1,7 +1,7 @@
-;userInput 
+read 
 >, >, <<
 
-;convert from ascii
+convert from ascii
 +++++ +
 [
  >----- ---
@@ -9,14 +9,14 @@
  <<-
 ]
 
-;multiplication
+multiply
 >[
  >[>+>+<<-]
  >[<+>-]
  <<-
 ]
 
-;getTheSeperateNumbers
+separate numbers
 >[-]>+> >+++++ +++++<
 [
  - >- [>>>]+++++ +++++<<+
@@ -26,7 +26,7 @@
 <+++++ +++++>>>[-<<<->>>]<<<
 
 
-;To ascii
+convert to ascii
 <+++++ +
 [
  >+++++ +++>
@@ -34,5 +34,6 @@
  <[<]>-
 ]
 
-;stdout
+print
 >>[.<<]<[<<]>>.
+>++++++++++.
