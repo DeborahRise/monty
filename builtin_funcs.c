@@ -51,11 +51,12 @@ void push(stack_t **stack, unsigned int line_number)
 	}
 	i = strtol(global_var.int_token, &endptr, 10);
 
-    if (endptr == global_var.int_token || *endptr != '\0' || i < INT_MIN || i > INT_MAX)
-		{
-			free_stack(*stack);
-			push_int_err(line_number);
-		}
+	if (endptr == global_var.int_token ||
+			*endptr != '\0' || i < INT_MIN || i > INT_MAX)
+	{
+		free_stack(*stack);
+		push_int_err(line_number);
+	}
 	n = atoi(global_var.int_token);
 	if (*stack  == NULL)
 	{
