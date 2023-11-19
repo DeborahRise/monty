@@ -47,11 +47,11 @@ typedef struct instruction_s
 } instruction_t;
 
 /**
- * GLOBE - struct with variable globals
- * @token2: integer
- * @fd: points to the previous element of the stack (or queue)
- * @line_buf: points to the next element of the stack (or queue)
- *
+ * struct some_globals - struct with variable globals
+ * @int_token: integer
+ * @fp: points to the previous element of the stack (or queue)
+ * @buffer: points to the next element of the stack (or queue)
+ * @mode: checks for the mode of entry. Queue or Stack
  * Description: doubly linked list node structure
  * for stack, queues, LIFO, FIFO Holberton project
  */
@@ -89,7 +89,7 @@ stack_t *create_stacknode_end(stack_t **stack, int n);
 void free_stacknode(stack_t **stack);
 
 /*The op_func and other helper functions*/
-int _isdigit();
+int _isdigit(void);
 void rotr(stack_t **stack, unsigned int line_number);
 int get_op_func(const char *token, stack_t **stack, unsigned int line_number);
 void push(stack_t **stack, unsigned int line_number);
