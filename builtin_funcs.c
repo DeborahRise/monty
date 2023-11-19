@@ -1,5 +1,6 @@
 #include "monty.h"
 #include <stdio.h>
+#include <limits.h>
 
 /**
  * _isdigit - Entry point
@@ -35,7 +36,8 @@ int _isdigit(void)
 void push(stack_t **stack, unsigned int line_number)
 {
 
-	int n = 0;
+	int n = 0, i = 0;
+	char *endptr;
 
 	if (global_var.int_token == NULL)
 	{
@@ -47,6 +49,13 @@ void push(stack_t **stack, unsigned int line_number)
 		free_stack(*stack);
 		push_int_err(line_number);
 	}
+	i = strtol(global_var.int_token, &endptr, 10);
+
+    if (endptr == global_var.int_token || *endptr != '\0' || i < INT_MIN || i > INT_MAX)
+		{
+			free_stack(*stack);
+			push_int_err(line_number);
+		}
 	n = atoi(global_var.int_token);
 	if (*stack  == NULL)
 	{
